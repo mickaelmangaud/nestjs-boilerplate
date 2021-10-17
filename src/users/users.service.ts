@@ -11,26 +11,32 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = this.usersRepository.create(createUserDto);
-    return await this.usersRepository.save(createdUser);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...user } = await this.usersRepository.save(createdUser);
+    return user as User;
   }
 
-  async findAll(limit: string): Promise<User[]> {
-    return await this.usersRepository.find({ take: +limit || 0 });
+  async findAll(limit: string, offset: string): Promise<User[]> {
+    return await this.usersRepository.find({
+      take: +limit || 0,
+      skip: +offset || 0,
+    });
   }
 
-  findOne(id: number): string {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<User> {
+    return await this.usersRepository.findOne(+id);
   }
 
   async findByEmail(email: string): Promise<User> {
     return this.usersRepository.findOne({ email });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user ${JSON.stringify(updateUserDto)}`;
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    await this.usersRepository.update(id, updateUserDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number): string {
-    return `This action removes a #${id} user`;
+  async remove(user: User): Promise<User> {
+    return await this.usersRepository.remove(user);
   }
 }
