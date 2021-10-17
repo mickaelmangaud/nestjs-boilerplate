@@ -14,7 +14,6 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -32,13 +31,7 @@ export class UsersController {
       throw new ConflictException(`User with email ${createUserDto.email} alredy exists`);
     }
 
-    const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(createUserDto.password, salt);
-
-    return await this.usersService.create({
-      ...createUserDto,
-      password: hash,
-    });
+    return await this.usersService.create(createUserDto);
   }
 
   @Get(':id')
