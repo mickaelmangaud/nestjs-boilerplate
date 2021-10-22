@@ -1,5 +1,6 @@
 # nestjs-boilerplate
 
-TODOS:
-
-- Terminer [POST] /users (ne pas retourner le mdp)
+**PgAdmin**
+```
+sudo chown -R 5050:5050 ./pgadmin
+```

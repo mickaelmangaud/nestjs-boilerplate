@@ -25,12 +25,11 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.usersRepository.findOne({ email });
+    return await this.usersRepository.findOne({ email });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    await this.usersRepository.update(id, updateUserDto);
-    return await this.findOne(id);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.usersRepository.update(+id, updateUserDto);
   }
 
   async remove(user: User): Promise<User> {

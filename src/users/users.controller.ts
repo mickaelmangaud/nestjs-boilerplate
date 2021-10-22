@@ -28,7 +28,7 @@ export class UsersController {
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     const foundUser = await this.usersService.findByEmail(createUserDto.email);
     if (foundUser) {
-      throw new ConflictException(`User with email ${createUserDto.email} alredy exists`);
+      throw new ConflictException(`User with email ${createUserDto.email} already exists`);
     }
 
     const createdUser = await this.usersService.create(createUserDto);
@@ -51,7 +51,8 @@ export class UsersController {
     if (!userToUpdate) {
       throw new NotFoundException(`User with id ${id} not Found`);
     }
-    return this.usersService.update(+id, updateUserDto);
+    await this.usersService.update(+id, updateUserDto);
+    return this.usersService.findOne(+id);
   }
 
   @Delete(':id')
