@@ -31,7 +31,8 @@ export class UsersController {
       throw new ConflictException(`User with email ${createUserDto.email} alredy exists`);
     }
 
-    return await this.usersService.create(createUserDto);
+    const createdUser = await this.usersService.create(createUserDto);
+    return this.usersService.findOne(createdUser.id);
   }
 
   @Get(':id')

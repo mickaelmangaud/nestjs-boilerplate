@@ -10,9 +10,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = this.usersRepository.create(createUserDto);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...user } = await this.usersRepository.save(createdUser);
-    return user as User;
+    return await this.usersRepository.save(createdUser);
   }
 
   async findAll(limit: string, offset: string): Promise<User[]> {
